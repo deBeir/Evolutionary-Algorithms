@@ -10,7 +10,8 @@ class Indiv():
         self.genes = genes
         if not self.genes:
             self.initRandom(size)
-
+          
+    
     def __eq__(self, solution):
         if isinstance(solution, self.__class__):
             return self.genes.sort() == solution.genes.sort()
@@ -80,6 +81,20 @@ class Indiv():
         genePos1 = self.genes[position1]
         self.genes[position1] = self.genes[position2]
         self.genes[position2] = genePos1
+        
+    def scrambleMutation(self):
+        size = len(self.genes)
+        pos1 = randint(0, size-2)
+        pos2 = randint(pos1+1, size-1)
+        
+        list_pos = list(range(pos1, pos2))
+        list_pos_unused = list(range(pos1, pos2))
+
+        for i in range(len(list_pos)):
+            pos_selected = choice(list_pos_unused)
+            list_pos_unused.remove(pos_selected)
+            pos_to_change = list_pos[i]
+            self.genes[pos_to_change] = self.genes[pos_selected]
 
     def crossover(self, indiv2):
         return self.crossover(indiv2)
@@ -147,6 +162,35 @@ class Indiv():
                 offsp2.append(self.genes[k])
         
         return self.__class__(size, offsp1), self.__class__(size, offsp2)
+    
+   def discrete_crossover(self, indiv2):
+        offsp1 = []
+        offsp2 = []
+        size = len(self.genes)
+
+        genesPai1 = self.genes
+        genesPai2 = indiv2.getGenes()
+
+        randomOffS1 = []
+        randomOffS2 = []
+
+        for i in range(size):
+            randomOffS1.append(randint(0, 1))
+            randomOffS2.append(randint(0, 1))
+
+        for i,k in enumerate(randomOffS1):
+            if k == 0:
+                offsp1.append(genesPai1[i])
+            else:
+                offsp1.append(genesPai2[i])
+
+        for i,k in enumerate(randomOffS2):
+            if k == 0:
+                offsp2.append(genesPai1[i])
+            else:
+                offsp2.append(genesPai2[i])
+
+        return self.__class__(size, offsp1, self.lowerLim, self.upperLim), self.__class__(size, offsp2, self.lowerLim, self.upperLim) 
 
   
     def ringCrossover(self, indiv2):
