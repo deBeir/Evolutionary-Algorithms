@@ -83,6 +83,8 @@ class Indiv():
         self.genes[position2] = genePos1
         
     def scrambleMutation(self):
+        # Applies a random mutation to a (random) position range.
+        
         size = len(self.genes)
         pos1 = randint(0, size-2)
         pos2 = randint(pos1+1, size-1)
@@ -164,12 +166,15 @@ class Indiv():
         return self.__class__(size, offsp1), self.__class__(size, offsp2)
     
    def discrete_crossover(self, indiv2):
+        # Applies discret recombination between two different individuals through random selection of which parent 
+        # will provide the genes.
+        
         offsp1 = []
         offsp2 = []
         size = len(self.genes)
 
-        genesPai1 = self.genes
-        genesPai2 = indiv2.getGenes()
+        genesParent1 = self.genes
+        genesParent2 = indiv2.getGenes()
 
         randomOffS1 = []
         randomOffS2 = []
@@ -180,15 +185,15 @@ class Indiv():
 
         for i,k in enumerate(randomOffS1):
             if k == 0:
-                offsp1.append(genesPai1[i])
+                offsp1.append(genesParent1[i])
             else:
-                offsp1.append(genesPai2[i])
+                offsp1.append(genesParent2[i])
 
         for i,k in enumerate(randomOffS2):
             if k == 0:
-                offsp2.append(genesPai1[i])
+                offsp2.append(genesParent1[i])
             else:
-                offsp2.append(genesPai2[i])
+                offsp2.append(genesParent2[i])
 
         return self.__class__(size, offsp1, self.lowerLim, self.upperLim), self.__class__(size, offsp2, self.lowerLim, self.upperLim) 
 
